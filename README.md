@@ -26,7 +26,7 @@ sudo make clean install
 ```  
 
 # Usage
-Run `kittyfetch`! For some verbose about version/verbose info of Kittyfetch -h flag can be used.
+Run `kittyfetch`! For some version/verbose info of Kittyfetch use -v flag.
 
 # License
 Kittyfetch is licensed under the MIT license.  
