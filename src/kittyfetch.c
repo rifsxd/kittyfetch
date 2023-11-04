@@ -9,6 +9,7 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
+#define VERSION "1.0.0"
 
 // Function declarations
 void kittyfetch(int verbose);
@@ -37,8 +38,7 @@ int main(int argc, char *argv[]) {
 void kittyfetch(int verbose) {
     if (verbose) {
         printf("\n");
-        printf("\033[92m >-< Meow! This is kittyfetch, your friendly system information display made with love by RifsxD! <3\033[0m\n\n");
-        printf("\n");
+        printf("\033[92m >-< Meow! This is kittyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
     }
 
     printf(
