@@ -9,7 +9,7 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
-#define VERSION "1.0.0"
+#define VERSION "0.0.1"
 
 // Function declarations
 void kittyfetch(int verbose);
