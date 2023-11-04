@@ -9,7 +9,6 @@
 			<img alt="GitHub stars" src="https://img.shields.io/github/stars/rifsxd/kittyfetch?style=for-the-badge">
 		</a>
 		<br>
-
 		🐈‍⬛ Kittyfetch is a cute little and fast tool for fetching info about your system.
 	</p><br>
 	<img src="/assets/kittyfetch.png">
