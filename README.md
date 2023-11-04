@@ -21,7 +21,7 @@ Binaries are provided at the releases page [here](https://github.com/rifsxd/kitt
 ## Manual Compile
 ```sh
 git clone https://github.com/rifsxd/kittyfetch
-cd Kittyfetch
+cd kittyfetch/src
 sudo make clean install
 
 ```  
