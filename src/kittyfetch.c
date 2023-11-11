@@ -5,20 +5,27 @@
 #include <time.h>
 
 #include <sys/utsname.h>
+#include <sys/statvfs.h>
+
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
-#define VERSION "0.0.2"
+#define VERSION "0.0.3"
 
 // Function declarations
 void kittyfetch(int verbose);
 char* titleinf();
+char* uptimeinf();
 char* osinf();
+char* raminf();
 char* kernelinf();
 char* shellinf();
 char* wminf();
 char* getRandomGreeting();
+char* packageinf();
+char* storageinf();
+
 
 
 int main(int argc, char *argv[]) {
@@ -46,16 +53,23 @@ void kittyfetch(int verbose) {
         " \033[3m%s\n"
         "            \n"
         "            %s\n"
+        "            %s\n"
         "   \033[96m/\\_/\\\033[0m    %s\n"
         "  \033[96m( >.< )\033[0m   %s\n"
         "   \033[96m= ^ =\033[0m    %s\n"
         "  \033[96m~(\033[95m♥\033[95m\033[96m)(\033[95m♥\033[96m)   %s\n"
+        "            %s\n"
+        "            %s\n"
         "            \n",
         getRandomGreeting(),
         titleinf(),
         osinf(),
+        // packageinf(), // Makes the fetch utility slow enable it if you need it.
         kernelinf(),
+        uptimeinf(),
         shellinf(),
+        storageinf(),
+        raminf(),
         wminf()
     );
 
@@ -183,4 +197,112 @@ char* wminf() {
     }
 
     return wm;
+}
+
+char* uptimeinf() {
+    char* uptime = malloc(256);
+
+    FILE* uptimeFile = fopen("/proc/uptime", "r");
+    if (uptimeFile) {
+        double uptimeValue;
+        fscanf(uptimeFile, "%lf", &uptimeValue);
+        fclose(uptimeFile);
+
+        int hours = (int)(uptimeValue / 3600);
+        int minutes = (int)((uptimeValue - hours * 3600) / 60);
+
+        snprintf(uptime, 256, "\033[36mUptime \033[0m%dh %dm", hours, minutes);
+    } else {
+        snprintf(uptime, 256, "\033[36mUptime \033[0m%s", "Unknown");
+    }
+
+    return uptime;
+}
+
+char* packageinf() {
+    char* packageInfo = malloc(256);
+
+    // Count RPM packages
+    FILE* rpmFile = popen("rpm -qa", "r");
+    if (rpmFile) {
+        int rpmCount = 0;
+        while (fgets(packageInfo, 256, rpmFile) != NULL) {
+            rpmCount++;
+        }
+        pclose(rpmFile);
+        
+        // Count Flatpak packages
+        FILE* flatpakFile = popen("flatpak list", "r");
+        if (flatpakFile) {
+            int flatpakCount = 0;
+            while (fgets(packageInfo, 256, flatpakFile) != NULL) {
+                flatpakCount++;
+            }
+            pclose(flatpakFile);
+
+            // Display both counts
+            snprintf(packageInfo, 256, "\033[93mPackages \033[0m%d(rpm), %d(flatpak)", rpmCount, flatpakCount);
+        } else {
+            snprintf(packageInfo, 256, "\033[93mPackages \033[0mRPM: %d, Flatpak: %s", rpmCount, "Unknown");
+        }
+    } else {
+        snprintf(packageInfo, 256, "\033[93mPackages \033[0m%s", "Unknown");
+    }
+
+    return packageInfo;
+}
+
+char* raminf() {
+    char* ram = malloc(256);
+
+    FILE* meminfo = fopen("/proc/meminfo", "r");
+    if (meminfo) {
+        long total_mem = 0, free_mem = 0, buffers = 0, cached = 0;
+        char line[256];
+
+        while (fgets(line, sizeof(line), meminfo) != NULL) {
+            if (sscanf(line, "MemTotal: %ld kB", &total_mem) == 1) {
+                continue;
+            }
+            if (sscanf(line, "MemFree: %ld kB", &free_mem) == 1) {
+                continue;
+            }
+            if (sscanf(line, "Buffers: %ld kB", &buffers) == 1) {
+                continue;
+            }
+            if (sscanf(line, "Cached: %ld kB", &cached) == 1) {
+                continue;
+            }
+        }
+
+        if (total_mem > 0 && free_mem > 0) {
+            // Adjust based on your preference
+            long used_mem = total_mem - free_mem - buffers - cached;
+            snprintf(ram, 256, "\033[94mRAM \033[0m%ld MB / %ld MB", used_mem / 1024, total_mem / 1024);
+        } else {
+            snprintf(ram, 256, "\033[94mRAM \033[0m%s", "Unknown");
+        }
+
+        fclose(meminfo);
+    } else {
+        snprintf(ram, 256, "\033[94mRAM \033[0m%s", "Unknown");
+    }
+
+    return ram;
+}
+
+char* storageinf() {
+    char* storage = malloc(256);
+
+    struct statvfs vfs;
+    if (statvfs("/", &vfs) == 0) {
+        long total_space = (long)vfs.f_frsize * vfs.f_blocks;
+        long free_space = (long)vfs.f_frsize * vfs.f_bfree;
+
+        snprintf(storage, 256, "\033[95mDisk \033[0m%ld GB / %ld GB", free_space / (1024 * 1024), total_space / (1024 * 1024));
+    } else {
+        snprintf(storage, 256, "\033[95mDisk \033[0m%s", "Unknown");
+    }
+
+    return storage;
 }
