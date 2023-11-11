@@ -299,7 +299,7 @@ char* storageinf() {
         long total_space = (long)vfs.f_frsize * vfs.f_blocks;
         long free_space = (long)vfs.f_frsize * vfs.f_bfree;
 
-        snprintf(storage, 256, "\033[95mDisk \033[0m%ld GB / %ld GB", free_space / (1024 * 1024), total_space / (1024 * 1024));
+        snprintf(storage, 256, "\033[95mDisk \033[0m%ld MB / %ld MB", free_space / (1024 * 1024), total_space / (1024 * 1024));
     } else {
         snprintf(storage, 256, "\033[95mDisk \033[0m%s", "Unknown");
     }
