@@ -11,7 +11,7 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
-#define VERSION "0.0.4"
+#define VERSION "0.0.6"
 
 // Function declarations
 void kittyfetch(int verbose);
@@ -25,6 +25,8 @@ char *wminf();
 char *getRandomGreeting();
 char *packageinf();
 char *storageinf();
+char *cpuinf();
+char *gpuinf();
 
 int main(int argc, char *argv[]) {
     int verbose = 0;
@@ -53,24 +55,30 @@ void kittyfetch(int verbose) {
         "            %s\n"
         "            %s\n"
         "            %s\n"
+        "            %s\n"
         "   \033[38;5;94m/\\_/\\\033[0m    %s\n"
         "  \033[38;5;15m( >.< )\033[0m   %s\n"
         "   \033[38;5;94m= ^ =\033[0m    %s\n"
         "  \033[38;5;15m~(\033[38;5;211m♥\033[\033[38;5;15m)(\033[38;5;211m♥\033[38;5;15m)   %s\n"
         "            %s\n"
         "            %s\n"
+        "            %s\n"
         "            \n",
         getRandomGreeting(),
         titleinf(),
         osinf(),
-        packageinf(), // Makes the fetch utility slow enable it if you need it.
+        packageinf(), // Makes the fetch utility slow, disable it if you need it.
         kernelinf(),
         uptimeinf(),
         shellinf(),
+        cpuinf(),
+        gpuinf(),
         storageinf(),
         raminf(),
         wminf()
     );
+
+    cpuinf(); // Display CPU information
 
     printf("         ");
     for (int i = 0; i < 8; i++) {
@@ -410,4 +418,66 @@ char *packageinf() {
     }
 
     return packageInfo;
+}
+
+char *cpuinf() {
+    char *cpu = malloc(256);
+    if (cpu) {
+        FILE *cpuinfo = fopen("/proc/cpuinfo", "r");
+        if (cpuinfo) {
+            char line[256];
+            int cpuCount = 0;
+
+            while (fgets(line, sizeof(line), cpuinfo) != NULL) {
+                if (strstr(line, "model name")) {
+                    cpuCount++;
+                    char *model = strchr(line, ':') + 2;
+                    model[strlen(model) - 1] = '\0'; // Remove the trailing newline
+                    snprintf(cpu, 256, "\033[95mCPU \033[0m%s (x%d)", model, cpuCount);
+                }
+            }
+
+            fclose(cpuinfo);
+        } else {
+            snprintf(cpu, 256, "\033[95mCPU \033[0m%s", "Unknown");
+        }
+    } else {
+        snprintf(cpu, 256, "\033[95mCPU \033[0m%s", "Unknown");
+    }
+
+    return cpu;
+}
+
+char *gpuinf() {
+    char *gpu = malloc(256);
+    if (gpu) {
+        FILE *lspci = popen("lspci | grep -i vga", "r");
+        if (lspci) {
+            char line[256];
+
+            if (fgets(line, sizeof(line), lspci) != NULL) {
+                // Remove unwanted prefix
+                char *gpuInfo = strstr(line, ": ");
+                if (gpuInfo) {
+                    gpuInfo += 2;  // Move past the ": "
+                    // Remove newline character
+                    gpuInfo[strcspn(gpuInfo, "\n")] = 0;
+
+                    snprintf(gpu, 256, "\033[96mGPU \033[0m%s", gpuInfo);
+                } else {
+                    snprintf(gpu, 256, "\033[96mGPU \033[0m%s", "Unknown");
+                }
+            } else {
+                snprintf(gpu, 256, "\033[96mGPU \033[0m%s", "Unknown");
+            }
+
+            pclose(lspci);
+        } else {
+            snprintf(gpu, 256, "\033[96mGPU \033[0m%s", "Unknown");
+        }
+    } else {
+        snprintf(gpu, 256, "\033[96mGPU \033[0m%s", "Unknown");
+    }
+
+    return gpu;
 }
