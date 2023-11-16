@@ -52,17 +52,18 @@ void kittyfetch(int verbose) {
         "            \n"
         "            %s\n"
         "            %s\n"
-        "   \033[96m/\\_/\\\033[0m    %s\n"
-        "  \033[96m( >.< )\033[0m   %s\n"
-        "   \033[96m= ^ =\033[0m    %s\n"
-        "  \033[96m~(\033[95m♥\033[95m\033[96m)(\033[95m♥\033[96m)   %s\n"
+        "            %s\n"
+        "   \033[38;5;94m/\\_/\\\033[0m    %s\n"
+        "  \033[38;5;15m( >.< )\033[0m   %s\n"
+        "   \033[38;5;94m= ^ =\033[0m    %s\n"
+        "  \033[38;5;15m~(\033[38;5;211m♥\033[\033[38;5;15m)(\033[38;5;211m♥\033[38;5;15m)   %s\n"
         "            %s\n"
         "            %s\n"
         "            \n",
         getRandomGreeting(),
         titleinf(),
         osinf(),
-        // packageinf(), // Makes the fetch utility slow enable it if you need it.
+        packageinf(), // Makes the fetch utility slow enable it if you need it.
         kernelinf(),
         uptimeinf(),
         shellinf(),
@@ -187,7 +188,7 @@ char *wminf() {
         char *waylandDisplay = getenv("WAYLAND_DISPLAY");
         if (waylandDisplay) {
             char *xdgDesktop = getenv("XDG_CURRENT_DESKTOP");
-            snprintf(wm, 256, "\033[35mWM \033[0m%s", xdgDesktop ? xdgDesktop : "Unknown");
+            snprintf(wm, 256, "\033[38;5;93mWM \033[0m%s", xdgDesktop ? xdgDesktop : "Unknown");
         } else {
             Display *display = XOpenDisplay(NULL);
             if (display) {
@@ -212,21 +213,21 @@ char *wminf() {
                         if (XGetWindowProperty(display, supportingWmCheck, netWmNameAtom, 0, 1024, False,
                                                utf8StringAtom, &actualType, &actualFormat,
                                                &nItems, &bytesAfter, &propValue) == Success && propValue) {
-                            snprintf(wm, 256, "\033[35mWM \033[0m%s", (char *)propValue);
+                            snprintf(wm, 256, "\033[38;5;93mWM \033[0m%s", (char *)propValue);
                             XFree(propValue);
                         } else {
-                            snprintf(wm, 256, "\033[35mWM \033[0m%s", "Unknown");
+                            snprintf(wm, 256, "\033[38;5;93mWM \033[0m%s", "Unknown");
                         }
                     }
                 }
 
                 XCloseDisplay(display);
             } else {
-                snprintf(wm, 256, "\033[35mWM \033[0m%s", "Unknown");
+                snprintf(wm, 256, "\033[38;5;93mWM \033[0m%s", "Unknown");
             }
         }
     } else {
-        snprintf(wm, 256, "\033[35mWM \033[0m%s", "Unknown");
+        snprintf(wm, 256, "\033[38;5;93mWM \033[0m%s", "Unknown");
     }
 
     return wm;
@@ -255,42 +256,6 @@ char *uptimeinf() {
     return uptime;
 }
 
-char *packageinf() {
-    char *packageInfo = malloc(256);
-    if (packageInfo) {
-        // Count RPM packages
-        FILE *rpmFile = popen("rpm -qa", "r");
-        if (rpmFile) {
-            int rpmCount = 0;
-            while (fgets(packageInfo, 256, rpmFile) != NULL) {
-                rpmCount++;
-            }
-            pclose(rpmFile);
-
-            // Count Flatpak packages
-            FILE *flatpakFile = popen("flatpak list", "r");
-            if (flatpakFile) {
-                int flatpakCount = 0;
-                while (fgets(packageInfo, 256, flatpakFile) != NULL) {
-                    flatpakCount++;
-                }
-                pclose(flatpakFile);
-
-                // Display both counts
-                snprintf(packageInfo, 256, "\033[93mPackages \033[0m%d(rpm), %d(flatpak)", rpmCount, flatpakCount);
-            } else {
-                snprintf(packageInfo, 256, "\033[93mPackages \033[0mRPM: %d, Flatpak: %s", rpmCount, "Unknown");
-            }
-        } else {
-            snprintf(packageInfo, 256, "\033[93mPackages \033[0m%s", "Unknown");
-        }
-    } else {
-        snprintf(packageInfo, 256, "\033[93mPackages \033[0m%s", "Unknown");
-    }
-
-    return packageInfo;
-}
-
 char *raminf() {
     char *ram = malloc(256);
     if (ram) {
@@ -317,17 +282,17 @@ char *raminf() {
             if (total_mem > 0 && free_mem > 0) {
                 // Adjust based on your preference
                 long used_mem = total_mem - free_mem - buffers - cached;
-                snprintf(ram, 256, "\033[94mRAM \033[0m%ld MB / %ld MB", used_mem / 1024, total_mem / 1024);
+                snprintf(ram, 256, "\033[38;5;198mRAM \033[0m%ld MB / %ld MB", used_mem / 1024, total_mem / 1024);
             } else {
-                snprintf(ram, 256, "\033[94mRAM \033[0m%s", "Unknown");
+                snprintf(ram, 256, "\033[38;5;198mRAM \033[0m%s", "Unknown");
             }
 
             fclose(meminfo);
         } else {
-            snprintf(ram, 256, "\033[94mRAM \033[0m%s", "Unknown");
+            snprintf(ram, 256, "\033[38;5;198mRAM \033[0m%s", "Unknown");
         }
     } else {
-        snprintf(ram, 256, "\033[94mRAM \033[0m%s", "Unknown");
+        snprintf(ram, 256, "\033[38;5;198mRAM \033[0m%s", "Unknown");
     }
 
     return ram;
@@ -339,9 +304,9 @@ char *storageinf() {
         struct statvfs vfs;
         if (statvfs("/", &vfs) == 0) {
             long total_space = (long)vfs.f_frsize * vfs.f_blocks;
-            long free_space = (long)vfs.f_frsize * vfs.f_bfree;
+            long used_space = (long)vfs.f_frsize * (vfs.f_blocks - vfs.f_bfree);
 
-            snprintf(storage, 256, "\033[95mDisk \033[0m%ld MB / %ld MB", free_space / (1024 * 1024), total_space / (1024 * 1024));
+            snprintf(storage, 256, "\033[95mDisk \033[0m%ld MB / %ld MB", used_space / (1024 * 1024), total_space / (1024 * 1024));
         } else {
             snprintf(storage, 256, "\033[95mDisk \033[0m%s", "Unknown");
         }
@@ -350,4 +315,99 @@ char *storageinf() {
     }
 
     return storage;
+}
+
+char *getLSBReleaseInfo() {
+    char *lsbInfo = malloc(256);
+    if (lsbInfo) {
+        FILE *lsbReleaseFile = popen("lsb_release -si 2>/dev/null", "r");
+        if (lsbReleaseFile) {
+            if (fgets(lsbInfo, 256, lsbReleaseFile) != NULL) {
+                // Remove newline character
+                lsbInfo[strcspn(lsbInfo, "\n")] = 0;
+            } else {
+                snprintf(lsbInfo, 256, "%s", "Unknown");
+            }
+            pclose(lsbReleaseFile);
+        } else {
+            snprintf(lsbInfo, 256, "%s", "Unknown");
+        }
+    } else {
+        snprintf(lsbInfo, 256, "%s", "Unknown");
+    }
+    return lsbInfo;
+}
+
+char *packageinf() {
+    char *lsbInfo = getLSBReleaseInfo();
+
+    char *packageInfo = malloc(256);
+    if (packageInfo) {
+        int pkgCount = 0;
+
+        // Check the Linux distribution using os-release
+        FILE *osReleaseFile = popen("cat /etc/os-release | grep '^ID_LIKE=' | cut -d'=' -f2", "r");
+        if (osReleaseFile) {
+            char distro[64];
+            if (fgets(distro, sizeof(distro), osReleaseFile) != NULL) {
+                // Remove newline character
+                distro[strcspn(distro, "\n")] = 0;
+
+                // Get package info based on the distribution
+                if (strstr(distro, "arch") != NULL) {
+                    // Count Arch Linux packages
+                    FILE *archFile = popen("pacman -Qq", "r");
+                    if (archFile) {
+                        while (fgets(packageInfo, 256, archFile) != NULL) {
+                            pkgCount++;
+                        }
+                        pclose(archFile);
+
+                        snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s: %d", lsbInfo, pkgCount);
+                    } else {
+                        snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+                    }
+                } else if (strstr(distro, "fedora") != NULL || strstr(distro, "opensuse") != NULL || strstr(distro, "suse") != NULL || strstr(distro, "rhel") != NULL) {
+                    // Count RPM packages
+                    FILE *rpmFile = popen("rpm -qa", "r");
+                    if (rpmFile) {
+                        while (fgets(packageInfo, 256, rpmFile) != NULL) {
+                            pkgCount++;
+                        }
+                        pclose(rpmFile);
+
+                        snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0mrpm: %d", pkgCount);
+                    } else {
+                        snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+                    }
+                } else if (strstr(distro, "debian") != NULL || strstr(distro, "ubuntu") != NULL || strstr(distro, "linuxmint") != NULL || strstr(distro, "popos") != NULL) {
+                    // Count Debian/Ubuntu packages
+                    FILE *debFile = popen("dpkg -l | grep ^ii | wc -l", "r");
+                    if (debFile) {
+                        if (fgets(packageInfo, 256, debFile) != NULL) {
+                            pkgCount = atoi(packageInfo);
+                            snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0mdeb: %d", pkgCount);
+                        } else {
+                            snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+                        }
+                        pclose(debFile);
+                    } else {
+                        snprintf(packageInfo, 256, "\033[38;5;208mmPackages \033[0m%s", "Unknown");
+                    }
+                } else {
+                    snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+                }
+            } else {
+                snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+            }
+            pclose(osReleaseFile);
+        } else {
+            snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+        }
+        free(lsbInfo);
+    } else {
+        snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+    }
+
+    return packageInfo;
 }
