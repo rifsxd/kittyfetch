@@ -11,7 +11,7 @@
 		<br>
 		🐈‍⬛ Kittyfetch is a cute little and fast tool for fetching info about your system.
 	</p><br>
-	<img src="/assets/kittyfetch.png">
+	<img src="/assets/kittyfetch-2.png">
 </div>
 
 # Install
