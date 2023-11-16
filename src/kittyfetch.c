@@ -130,7 +130,7 @@ char *osinf() {
         if (fp) {
             char line[256];
             while (fgets(line, sizeof(line), fp)) {
-                if (strstr(line, "PRETTY_NAME")) {
+                if (strstr(line, "NAME")) {
                     char *name = strchr(line, '=') + 2; // Skip the '=' and space characters
                     name[strlen(name) - 2] = '\0';    // Remove the trailing newline and quote characters
                     snprintf(osInfo, 256, "\033[32mOS \033[0m%s", name);
