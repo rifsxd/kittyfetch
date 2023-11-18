@@ -380,7 +380,7 @@ char *packageinf() {
         int pkgCount = 0;
 
         // Check the Linux distribution using os-release
-        FILE *osReleaseFile = popen("cat /etc/os-release | grep '^ID_LIKE=' | cut -d'=' -f2", "r");
+        FILE *osReleaseFile = popen("cat /etc/os-release | grep '^ID_LIKE=' | cut -d'=' -f2 && cat /etc/os-release | grep '^ID=' | cut -d'=' -f2", "r");
         if (osReleaseFile) {
             char distro[64];
             if (fgets(distro, sizeof(distro), osReleaseFile) != NULL) {
@@ -411,6 +411,20 @@ char *packageinf() {
                         pclose(rpmFile);
 
                         snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0mrpm: %d packages", PACKAGES, pkgCount);
+                    } else {
+                        snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
+                    }
+                } else if (strstr(distro, "nixos") != NULL) {
+                    // Count NixOS packages
+                    FILE *nixFile = popen("nix-store -qR /run/current-system/sw && nix-store -qR /etc/profiles/per-user/$USER | wc -l", "r");
+                    if (nixFile) {
+                        if (fgets(packageInfo, 256, nixFile) != NULL) {
+                            pkgCount = atoi(packageInfo);
+                            snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0mnix: %d packages", PACKAGES, pkgCount);
+                        } else {
+                            snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
+                        }
+                        pclose(nixFile);
                     } else {
                         snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
                     }
