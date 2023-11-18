@@ -12,6 +12,8 @@ PREFIX ?= /usr/
 # Flags
 FLAG = -lX11
 
+ICONS = "-D ICONS"
+
 # Binary Folder
 INSTALLPATH = ${DESTDIR}${PREFIX}/bin
 
@@ -19,6 +21,13 @@ INSTALLPATH = ${DESTDIR}${PREFIX}/bin
 CC = gcc
 
 install : build
+
+	@echo "installing binary file to ${INSTALLPATH}/${BIN}"
+	@cp build/${BIN} ${INSTALLPATH}
+	@chmod 0755 ${INSTALLPATH}/${BIN}
+	@echo "installed"
+
+install_icons : build_icons
 
 	@echo "installing binary file to ${INSTALLPATH}/${BIN}"
 	@cp build/${BIN} ${INSTALLPATH}
@@ -33,6 +42,11 @@ clean:
 build:
 	mkdir build
 	$(CC) -o build/$(BIN) $(SRC) $(FLAG)
+
+# Build the project with icons
+build_icons:
+	mkdir build
+	$(CC) -o build/$(BIN) $(SRC) $(ICONS) $(FLAG)
 
 # Run the project
 run: build

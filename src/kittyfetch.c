@@ -11,7 +11,33 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
-#define VERSION "0.0.6"
+#define VERSION "0.0.7"
+
+#ifdef ICONS
+#define USER ""
+#define OS "󰍹"
+#define PACKAGES "󰏓"
+#define KERNEL "󰌽"
+#define UPTIME "󱑁"
+#define SHELL ""
+#define CPU ""
+#define GPU "󰿵"
+#define DISK "󰋊"
+#define RAM "󰇻"
+#define WM "󰖲"
+#else
+#define USER "User"
+#define OS "OS"
+#define PACKAGES "Packages"
+#define KERNEL "Kernel"
+#define UPTIME "Uptime"
+#define SHELL "Shell"
+#define CPU "CPU"
+#define GPU "GPU"
+#define DISK "Disk"
+#define RAM "RAM"
+#define WM "WM"
+#endif
 
 // Function declarations
 void kittyfetch(int verbose);
@@ -112,12 +138,12 @@ char *titleinf() {
         char username[256];
         char hostname[256];
         if (getlogin_r(username, sizeof(username)) == 0 && gethostname(hostname, sizeof(hostname)) == 0) {
-            snprintf(title, 256, "\033[31m%s\033[0m", strcat(strcat(username, "@"), hostname));
+            snprintf(title, 256, "\033[31m%s \033[31m%s\033[0m", USER, strcat(strcat(username, "@"), hostname));
         } else {
-            snprintf(title, 256, "\033[31m%s\033[0m", "Unknown");
+            snprintf(title, 256, "\033[31m%s \033[31m%s\033[0m", USER, "Unknown");
         }
     } else {
-        snprintf(title, 256, "\033[31m%s\033[0m", "Unknown");
+        snprintf(title, 256, "\033[31m%s \033[31m%s\033[0m", USER, "Unknown");
     }
 
     return title;
@@ -133,16 +159,16 @@ char *osinf() {
                 if (strstr(line, "NAME")) {
                     char *name = strchr(line, '=') + 2; // Skip the '=' and space characters
                     name[strlen(name) - 2] = '\0';    // Remove the trailing newline and quote characters
-                    snprintf(osInfo, 256, "\033[32mOS \033[0m%s", name);
+                    snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, name);
                     break;
                 }
             }
             fclose(fp);
         } else {
-            snprintf(osInfo, 256, "\033[32mOS \033[0m%s", "Unknown");
+            snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, "Unknown");
         }
     } else {
-        snprintf(osInfo, 256, "\033[32mOS \033[0m%s", "Unknown");
+        snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, "Unknown");
     }
 
     return osInfo;
@@ -154,12 +180,12 @@ char *kernelinf() {
     if (osInfo) {
         struct utsname unameData;
         if (uname(&unameData) == 0) {
-            snprintf(osInfo, 256, "\033[33mKernel \033[0m%s", unameData.release);
+            snprintf(osInfo, 256, "\033[33m%s \033[0m%s", KERNEL, unameData.release);
         } else {
-            snprintf(osInfo, 256, "\033[33mKernel \033[0m%s", "Unknown");
+            snprintf(osInfo, 256, "\033[33m%s \033[0m%s", KERNEL, "Unknown");
         }
     } else {
-        snprintf(osInfo, 256, "\033[33mKernel \033[0m%s", "Unknown");
+        snprintf(osInfo, 256, "\033[33m%s \033[0m%s", KERNEL, "Unknown");
     }
 
     return osInfo;
@@ -173,16 +199,16 @@ char *shellinf() {
             char *shellname = strrchr(shellenv, '/');
             if (shellname) {
                 // If there's a '/', use the string after it
-                snprintf(shell, 256, "\033[34mShell \033[0m%s", shellname + 1);
+                snprintf(shell, 256, "\033[34m%s \033[0m%s", SHELL, shellname + 1);
             } else {
                 // If no '/', consider the whole string as the shell name
-                snprintf(shell, 256, "\033[34mShell \033[0m%s", shellenv);
+                snprintf(shell, 256, "\033[34m%s \033[0m%s", SHELL, shellenv);
             }
         } else {
-            snprintf(shell, 256, "\033[34mShell \033[0m%s", "Unknown");
+            snprintf(shell, 256, "\033[34m%s \033[0m%s", SHELL, "Unknown");
         }
     } else {
-        snprintf(shell, 256, "\033[34mShell \033[0m%s", "Unknown");
+        snprintf(shell, 256, "\033[34m%s \033[0m%s", SHELL, "Unknown");
     }
 
     return shell;
@@ -196,7 +222,7 @@ char *wminf() {
         char *waylandDisplay = getenv("WAYLAND_DISPLAY");
         if (waylandDisplay) {
             char *xdgDesktop = getenv("XDG_CURRENT_DESKTOP");
-            snprintf(wm, 256, "\033[38;5;93mWM \033[0m%s", xdgDesktop ? xdgDesktop : "Unknown");
+            snprintf(wm, 256, "\033[38;5;93m%s \033[0m%s", WM, xdgDesktop ? xdgDesktop : "Unknown");
         } else {
             Display *display = XOpenDisplay(NULL);
             if (display) {
@@ -221,21 +247,21 @@ char *wminf() {
                         if (XGetWindowProperty(display, supportingWmCheck, netWmNameAtom, 0, 1024, False,
                                                utf8StringAtom, &actualType, &actualFormat,
                                                &nItems, &bytesAfter, &propValue) == Success && propValue) {
-                            snprintf(wm, 256, "\033[38;5;93mWM \033[0m%s", (char *)propValue);
+                            snprintf(wm, 256, "\033[38;5;93m%s \033[0m%s", WM, (char *)propValue);
                             XFree(propValue);
                         } else {
-                            snprintf(wm, 256, "\033[38;5;93mWM \033[0m%s", "Unknown");
+                            snprintf(wm, 256, "\033[38;5;93m%s \033[0m%s", WM, "Unknown");
                         }
                     }
                 }
 
                 XCloseDisplay(display);
             } else {
-                snprintf(wm, 256, "\033[38;5;93mWM \033[0m%s", "Unknown");
+                snprintf(wm, 256, "\033[38;5;93m%s \033[0m%s", WM, "Unknown");
             }
         }
     } else {
-        snprintf(wm, 256, "\033[38;5;93mWM \033[0m%s", "Unknown");
+        snprintf(wm, 256, "\033[38;5;93m%s \033[0m%s", WM, "Unknown");
     }
 
     return wm;
@@ -253,12 +279,12 @@ char *uptimeinf() {
             int hours = (int)(uptimeValue / 3600);
             int minutes = (int)((uptimeValue - hours * 3600) / 60);
 
-            snprintf(uptime, 256, "\033[36mUptime \033[0m%dh %dm", hours, minutes);
+            snprintf(uptime, 256, "\033[36m%s \033[0m%dh %dm", UPTIME, hours, minutes);
         } else {
-            snprintf(uptime, 256, "\033[36mUptime \033[0m%s", "Unknown");
+            snprintf(uptime, 256, "\033[36m%s \033[0m%s", UPTIME, "Unknown");
         }
     } else {
-        snprintf(uptime, 256, "\033[36mUptime \033[0m%s", "Unknown");
+        snprintf(uptime, 256, "\033[36m%s \033[0m%s", UPTIME, "Unknown");
     }
 
     return uptime;
@@ -290,17 +316,17 @@ char *raminf() {
             if (total_mem > 0 && free_mem > 0) {
                 // Adjust based on your preference
                 long used_mem = total_mem - free_mem - buffers - cached;
-                snprintf(ram, 256, "\033[38;5;198mRAM \033[0m%ld MB / %ld MB", used_mem / 1024, total_mem / 1024);
+                snprintf(ram, 256, "\033[38;5;198m%s \033[0m%ld MB / %ld MB", RAM, used_mem / 1024, total_mem / 1024);
             } else {
-                snprintf(ram, 256, "\033[38;5;198mRAM \033[0m%s", "Unknown");
+                snprintf(ram, 256, "\033[38;5;198m%s \033[0m%s", RAM, "Unknown");
             }
 
             fclose(meminfo);
         } else {
-            snprintf(ram, 256, "\033[38;5;198mRAM \033[0m%s", "Unknown");
+            snprintf(ram, 256, "\033[38;5;198m%s \033[0m%s", RAM, "Unknown");
         }
     } else {
-        snprintf(ram, 256, "\033[38;5;198mRAM \033[0m%s", "Unknown");
+        snprintf(ram, 256, "\033[38;5;198m%s \033[0m%s", RAM, "Unknown");
     }
 
     return ram;
@@ -314,12 +340,12 @@ char *storageinf() {
             long total_space = (long)vfs.f_frsize * vfs.f_blocks;
             long used_space = (long)vfs.f_frsize * (vfs.f_blocks - vfs.f_bfree);
 
-            snprintf(storage, 256, "\033[95mDisk \033[0m%ld MB / %ld MB", used_space / (1024 * 1024), total_space / (1024 * 1024));
+            snprintf(storage, 256, "\033[95m%s \033[0m%ld MB / %ld MB", DISK, used_space / (1024 * 1024), total_space / (1024 * 1024));
         } else {
-            snprintf(storage, 256, "\033[95mDisk \033[0m%s", "Unknown");
+            snprintf(storage, 256, "\033[95m%s \033[0m%s", DISK, "Unknown");
         }
     } else {
-        snprintf(storage, 256, "\033[95mDisk \033[0m%s", "Unknown");
+        snprintf(storage, 256, "\033[95m%s \033[0m%s", DISK, "Unknown");
     }
 
     return storage;
@@ -371,9 +397,9 @@ char *packageinf() {
                         }
                         pclose(archFile);
 
-                        snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s: %d", lsbInfo, pkgCount);
+                        snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s: %d packages", PACKAGES, lsbInfo, pkgCount);
                     } else {
-                        snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+                        snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
                     }
                 } else if (strstr(distro, "fedora") != NULL || strstr(distro, "opensuse") != NULL || strstr(distro, "suse") != NULL || strstr(distro, "rhel") != NULL) {
                     // Count RPM packages
@@ -384,9 +410,9 @@ char *packageinf() {
                         }
                         pclose(rpmFile);
 
-                        snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0mrpm: %d", pkgCount);
+                        snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0mrpm: %d packages", PACKAGES, pkgCount);
                     } else {
-                        snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+                        snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
                     }
                 } else if (strstr(distro, "debian") != NULL || strstr(distro, "ubuntu") != NULL || strstr(distro, "linuxmint") != NULL || strstr(distro, "popos") != NULL) {
                     // Count Debian/Ubuntu packages
@@ -394,27 +420,27 @@ char *packageinf() {
                     if (debFile) {
                         if (fgets(packageInfo, 256, debFile) != NULL) {
                             pkgCount = atoi(packageInfo);
-                            snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0mdeb: %d", pkgCount);
+                            snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0mdeb: %d packages", PACKAGES, pkgCount);
                         } else {
-                            snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+                            snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
                         }
                         pclose(debFile);
                     } else {
-                        snprintf(packageInfo, 256, "\033[38;5;208mmPackages \033[0m%s", "Unknown");
+                        snprintf(packageInfo, 256, "\033[38;5;208mm%s \033[0m%s", PACKAGES, "Unknown");
                     }
                 } else {
-                    snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+                    snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
                 }
             } else {
-                snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+                snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
             }
             pclose(osReleaseFile);
         } else {
-            snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+            snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
         }
         free(lsbInfo);
     } else {
-        snprintf(packageInfo, 256, "\033[38;5;208mPackages \033[0m%s", "Unknown");
+        snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
     }
 
     return packageInfo;
@@ -433,16 +459,16 @@ char *cpuinf() {
                     cpuCount++;
                     char *model = strchr(line, ':') + 2;
                     model[strlen(model) - 1] = '\0'; // Remove the trailing newline
-                    snprintf(cpu, 256, "\033[95mCPU \033[0m%s (x%d)", model, cpuCount);
+                    snprintf(cpu, 256, "\033[95m%s \033[0m%s (x%d)", CPU, model, cpuCount);
                 }
             }
 
             fclose(cpuinfo);
         } else {
-            snprintf(cpu, 256, "\033[95mCPU \033[0m%s", "Unknown");
+            snprintf(cpu, 256, "\033[95m%s \033[0m%s", CPU, "Unknown");
         }
     } else {
-        snprintf(cpu, 256, "\033[95mCPU \033[0m%s", "Unknown");
+        snprintf(cpu, 256, "\033[95m%s \033[0m%s", CPU, "Unknown");
     }
 
     return cpu;
@@ -463,20 +489,20 @@ char *gpuinf() {
                     // Remove newline character
                     gpuInfo[strcspn(gpuInfo, "\n")] = 0;
 
-                    snprintf(gpu, 256, "\033[96mGPU \033[0m%s", gpuInfo);
+                    snprintf(gpu, 256, "\033[96m%s \033[0m%s", GPU, gpuInfo);
                 } else {
-                    snprintf(gpu, 256, "\033[96mGPU \033[0m%s", "Unknown");
+                    snprintf(gpu, 256, "\033[96m%s \033[0m%s", GPU, "Unknown");
                 }
             } else {
-                snprintf(gpu, 256, "\033[96mGPU \033[0m%s", "Unknown");
+                snprintf(gpu, 256, "\033[96m%s \033[0m%s", GPU, "Unknown");
             }
 
             pclose(lspci);
         } else {
-            snprintf(gpu, 256, "\033[96mGPU \033[0m%s", "Unknown");
+            snprintf(gpu, 256, "\033[96m%s \033[0m%s", GPU, "Unknown");
         }
     } else {
-        snprintf(gpu, 256, "\033[96mGPU \033[0m%s", "Unknown");
+        snprintf(gpu, 256, "\033[96m%s \033[0m%s", GPU, "Unknown");
     }
 
     return gpu;
