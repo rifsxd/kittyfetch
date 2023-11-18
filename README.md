@@ -20,7 +20,7 @@ sudo make clean install
 ```sh
 git clone https://github.com/rifsxd/kittyfetch
 cd kittyfetch/src
-sudo make clean install_icons
+sudo make clean install_legacy
 ```  
 
 # Usage

@@ -11,21 +11,9 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
-#define VERSION "0.0.7"
+#define VERSION "0.0.7-2"
 
-#ifdef ICONS
-#define USER ""
-#define OS "󰍹"
-#define PACKAGES "󰏓"
-#define KERNEL "󰌽"
-#define UPTIME "󱑁"
-#define SHELL ""
-#define CPU ""
-#define GPU "󰿵"
-#define DISK "󰋊"
-#define RAM "󰇻"
-#define WM "󰖲"
-#else
+#ifdef LEGACY
 #define USER "User"
 #define OS "OS"
 #define PACKAGES "Packages"
@@ -37,6 +25,18 @@
 #define DISK "Disk"
 #define RAM "RAM"
 #define WM "WM"
+#else
+#define USER ""
+#define OS "󰍹"
+#define PACKAGES "󰏓"
+#define KERNEL "󰌽"
+#define UPTIME "󱑁"
+#define SHELL ""
+#define CPU ""
+#define GPU "󰿵"
+#define DISK "󰋊"
+#define RAM "󰇻"
+#define WM "󰖲"
 #endif
 
 // Function declarations

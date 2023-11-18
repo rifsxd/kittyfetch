@@ -12,7 +12,7 @@ PREFIX ?= /usr/
 # Flags
 FLAG = -lX11
 
-ICONS = "-D ICONS"
+LEGACY = "-D LEGACY"
 
 # Binary Folder
 INSTALLPATH = ${DESTDIR}${PREFIX}/bin
@@ -27,7 +27,7 @@ install : build
 	@chmod 0755 ${INSTALLPATH}/${BIN}
 	@echo "installed"
 
-install_icons : build_icons
+install_legacy : build_legacy
 
 	@echo "installing binary file to ${INSTALLPATH}/${BIN}"
 	@cp build/${BIN} ${INSTALLPATH}
@@ -44,9 +44,9 @@ build:
 	$(CC) -o build/$(BIN) $(SRC) $(FLAG)
 
 # Build the project with icons
-build_icons:
+build_legacy:
 	mkdir build
-	$(CC) -o build/$(BIN) $(SRC) $(ICONS) $(FLAG)
+	$(CC) -o build/$(BIN) $(SRC) $(LEGACY) $(FLAG)
 
 # Run the project
 run: build
