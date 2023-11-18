@@ -11,7 +11,7 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
-#define VERSION "0.0.7-2"
+#define VERSION "0.0.8"
 
 #ifdef LEGACY
 #define USER "User"
@@ -416,7 +416,7 @@ char *packageinf() {
                     }
                 } else if (strstr(distro, "nixos") != NULL) {
                     // Count NixOS packages
-                    FILE *nixFile = popen("nix-store -qR /run/current-system/sw && nix-store -qR /etc/profiles/per-user/$USER | wc -l", "r");
+                    FILE *nixFile = popen("echo $(( $(nix-store -qR /run/current-system/sw | wc -l) + $(nix-store -qR /etc/profiles/per-user/$USER | wc -l) ))", "r");
                     if (nixFile) {
                         if (fgets(packageInfo, 256, nixFile) != NULL) {
                             pkgCount = atoi(packageInfo);
