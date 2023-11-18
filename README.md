@@ -16,6 +16,13 @@ git clone https://github.com/rifsxd/kittyfetch
 cd kittyfetch/src
 sudo make clean install
 
+```
+ - For icons support
+```sh
+git clone https://github.com/rifsxd/kittyfetch
+cd kittyfetch/src
+sudo make clean install_icons
+
 ```  
 
 # Usage
