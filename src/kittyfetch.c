@@ -93,7 +93,7 @@ void kittyfetch(int verbose) {
         getRandomGreeting(),
         titleinf(),
         osinf(),
-        packageinf(), // Makes the fetch utility slow, disable it if you need it.
+        packageinf(), // Might make the fetch utility slow, disable it if you need it.
         kernelinf(),
         uptimeinf(),
         shellinf(),
