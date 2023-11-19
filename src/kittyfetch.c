@@ -397,7 +397,7 @@ char *packageinf() {
                         }
                         pclose(archFile);
 
-                        snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0mpacman: %d packages", PACKAGES, pkgCount);
+                        snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%d (pacman)", PACKAGES, pkgCount);
                     } else {
                         snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
                     }
@@ -410,7 +410,7 @@ char *packageinf() {
                         }
                         pclose(rpmFile);
 
-                        snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0mrpm: %d packages", PACKAGES, pkgCount);
+                        snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%d (rpm)", PACKAGES, pkgCount);
                     } else {
                         snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
                     }
@@ -420,7 +420,7 @@ char *packageinf() {
                     if (nixFile) {
                         if (fgets(packageInfo, 256, nixFile) != NULL) {
                             pkgCount = atoi(packageInfo);
-                            snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0mnix: %d packages", PACKAGES, pkgCount);
+                            snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%d (nix)", PACKAGES, pkgCount);
                         } else {
                             snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
                         }
@@ -434,7 +434,7 @@ char *packageinf() {
                     if (debFile) {
                         if (fgets(packageInfo, 256, debFile) != NULL) {
                             pkgCount = atoi(packageInfo);
-                            snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0mdeb: %d packages", PACKAGES, pkgCount);
+                            snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%d (deb)", PACKAGES, pkgCount);
                         } else {
                             snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
                         }
