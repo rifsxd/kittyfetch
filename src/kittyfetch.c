@@ -397,7 +397,7 @@ char *packageinf() {
                         }
                         pclose(archFile);
 
-                        snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s: %d packages", PACKAGES, lsbInfo, pkgCount);
+                        snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0mpacman: %d packages", PACKAGES, pkgCount);
                     } else {
                         snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
                     }
