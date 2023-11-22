@@ -4,9 +4,13 @@
 	<p><br>
 		🐈‍⬛ Kittyfetch is a cute little and fast tool for fetching info about your system. Inspired from <a href="https://github.com/Rosettea/bunnyfetch"> Rosettea's Bunnyfetch</a> and i made it in C and extended it to be more featureful while keeping the code minimal.
 	</p><br>
+	<p><br> Full Kitty</p><br>
 	<img src="/assets/kitty_full.png">
+	<p><br> Minimal Kitty</p><br>
 	<img src="/assets/kitty_minimal.png">
+	<p><br> Full Bunny</p><br>
 	<img src="/assets/bunny_full.png">
+	<p><br> Minimal Bunny</p><br>
 	<img src="/assets/bunny_minimal.png">
 </div>
 
