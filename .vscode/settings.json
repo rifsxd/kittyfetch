@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "cstring": "c"
+        "cstring": "c",
+        "xutil.h": "c",
+        "xatom.h": "c"
     }
 }
