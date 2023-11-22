@@ -2,9 +2,12 @@
 	<h1>Kittyfetch</h1>
 	<blockquote align="center">🐈‍⬛ Cute little system info fetch utility.</blockquote>
 	<p><br>
-		🐈‍⬛ Kittyfetch is a cute little and fast tool for fetching info about your system.
+		🐈‍⬛ Kittyfetch is a cute little and fast tool for fetching info about your system. Inspired from <a href="https://github.com/Rosettea/bunnyfetch"> Rosettea's Bunnyfetch</a> and i made it in C and extended it to be more featureful while keeping the code minimal.
 	</p><br>
-	<img src="/assets/kittyfetch-3.png">
+	<img src="/assets/kitty_full.png">
+	<img src="/assets/kitty_minimal.png">
+	<img src="/assets/bunny_full.png">
+	<img src="/assets/bunny_minimal.png">
 </div>
 
 # Install
@@ -24,7 +27,7 @@ sudo make clean install_legacy
 ```  
 
 # Usage
-Run `kittyfetch`! For some version/verbose info of Kittyfetch use -v flag.
+Run `kittyfetch`! For some version/verbose info of Kittyfetch use -v flag. For bunny art use --bunny flag. For a more minimal fetch info use --minimal flag.
 
 # License
 Kittyfetch is licensed under the MIT license.  

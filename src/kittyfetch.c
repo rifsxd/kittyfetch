@@ -41,6 +41,7 @@
 
 // Function declarations
 void kittyfetch(int verbose, int isBunny);
+void kittyfetchminimal(int verbose, int isBunny);
 char *titleinf();
 char *uptimeinf();
 char *osinf();
@@ -49,6 +50,7 @@ char *kernelinf();
 char *shellinf();
 char *wminf();
 char *getRandomGreeting();
+char *getRandomGreetingBunny();
 char *packageinf();
 char *storageinf();
 char *cpuinf();
@@ -57,6 +59,7 @@ char *gpuinf();
 int main(int argc, char *argv[]) {
     int verbose = 0;
     int showBunny = 0;
+    int minimal = 0;
 
     // Check for flags
     for (int i = 1; i < argc; i++) {
@@ -64,6 +67,8 @@ int main(int argc, char *argv[]) {
             verbose = 1;
         } else if (strcmp(argv[i], "--bunny") == 0) {
             showBunny = 1;
+        } else if (strcmp(argv[i], "--minimal") == 0) {
+            minimal = 1;
         } else if (strcmp(argv[i], "--otherFlag") == 0) {
             // Handle other flag logic
             // You can add more flags as needed
@@ -74,9 +79,17 @@ int main(int argc, char *argv[]) {
 
     if (showBunny) {
         printf("\n");
-        kittyfetch(verbose, 1); // Show bunny
+        if (minimal) {
+            kittyfetchminimal(verbose, 1); // Show minimal bunny
+        } else {
+            kittyfetch(verbose, 1); // Show bunny
+        }
     } else {
-        kittyfetch(verbose, 0); // Show default kitty
+        if (minimal) {
+            kittyfetchminimal(verbose, 0); // Show minimal kitty
+        } else {
+            kittyfetch(verbose, 0); // Show default kitty
+        }
     }
 
     return 0;
@@ -86,7 +99,7 @@ void kittyfetch(int verbose, int isBunny) {
     if (verbose) {
         printf("\n");
         if (isBunny) {
-            printf("\033[92m ^-^ Purr! This is bunnyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
+            printf("\033[92m (^-^) Purr! This is bunnyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
         } else {
             printf("\033[92m >-< Meow! This is kittyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
         }
@@ -109,7 +122,7 @@ void kittyfetch(int verbose, int isBunny) {
             "            %s\n"
             "            %s\n"
             "            %s\n\n",
-            getRandomGreeting(),
+            getRandomGreetingBunny(),
             titleinf(),
             osinf(),
             packageinf(),
@@ -139,8 +152,7 @@ void kittyfetch(int verbose, int isBunny) {
             "  \033[38;5;15m~(\033[38;5;211m♥\033[\033[38;5;15m)(\033[38;5;211m♥\033[38;5;15m)   %s\n"
             "            %s\n"
             "            %s\n"
-            "            %s\n"
-            "            \n",
+            "            %s\n\n",
             getRandomGreeting(),
             titleinf(),
             osinf(),
@@ -167,9 +179,85 @@ void kittyfetch(int verbose, int isBunny) {
     printf("\033[0m\n\n");
 }
 
+void kittyfetchminimal(int verbose, int isBunny) {
+    if (verbose) {
+        printf("\n");
+        if (isBunny) {
+            printf("\033[92m ^-^ Purr! This is bunnyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
+        } else {
+            printf("\033[92m >-< Meow! This is kittyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
+        }
+    }
+
+    if (isBunny) {
+        // Bunny printf
+        printf(
+            "            \n"
+            " \033[3m%s\n"
+            "            \n"
+            "            %s\n"
+            "   \033[38;5;15m(\\ /)\033[0m    %s\n"
+            "   \033[38;5;15m( . .)\033[0m   %s\n"
+            "   \033[38;5;15mc(\033[38;5;211m%c\033[\033[38;5;15m)(\033[38;5;211m%c\033[\033[38;5;15m)\033[0m  %s\n"
+            "            %s\n\n",
+            getRandomGreetingBunny(),
+            titleinf(),
+            osinf(),
+            kernelinf(),
+            '"', '"',
+            shellinf(),
+            
+            wminf()
+        );
+    } else {
+        // Default kitty printf
+        printf(
+            "            \n"
+            " \033[3m%s\n"
+            "            \n"
+            "            %s\n"
+            "   \033[38;5;94m/\\_/\\\033[0m    %s\n"
+            "  \033[38;5;15m( >.< )\033[0m   %s\n"
+            "   \033[38;5;94m= ^ =\033[0m    %s\n"
+            "  \033[38;5;15m~(\033[38;5;211m♥\033[\033[38;5;15m)(\033[38;5;211m♥\033[38;5;15m)   %s\n\n",
+            getRandomGreeting(),
+            titleinf(),
+            osinf(),
+            kernelinf(),
+            shellinf(),
+            wminf()
+        );
+    }
+
+    printf("         ");
+    for (int i = 0; i < 8; i++) {
+        printf("\033[4%dm   ", i);
+    }
+    printf("\033[0m\n         ");
+    for (int i = 0; i < 8; i++) {
+        printf("\033[10%dm   ", i);
+    }
+    printf("\033[0m\n\n");
+}
+
 char *getRandomGreeting() {
     char *greetings[] = {
         "\033[92m Meow! =>.<=\033[0m",
+        "\033[92m Hello there! :D\033[0m",
+        "\033[92m Greetings! :)\033[0m",
+        "\033[92m Hey! >-<\033[0m",
+        "\033[92m Hiya! ;>\033[0m",
+        "\033[92m Yo! :3\033[0m",
+        "\033[92m Hi! ^_^\033[0m",
+        "\033[92m Hewwo! <3\033[0m"
+    };
+
+    return greetings[rand() % (sizeof(greetings) / sizeof(greetings[0]))];
+}
+
+char *getRandomGreetingBunny() {
+    char *greetings[] = {
+        "\033[92m Purr! ( . .)\033[0m",
         "\033[92m Hello there! :D\033[0m",
         "\033[92m Greetings! :)\033[0m",
         "\033[92m Hey! >-<\033[0m",
