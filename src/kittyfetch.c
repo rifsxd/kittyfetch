@@ -11,7 +11,7 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
-#define VERSION "0.0.9"
+#define VERSION "1.0.0"
 
 #ifdef LEGACY
 #define USER "User"
@@ -58,12 +58,15 @@ int main(int argc, char *argv[]) {
     int verbose = 0;
     int showBunny = 0;
 
-    // Check for the -v flag
-    if (argc > 1) {
-        if (strcmp(argv[1], "-v") == 0) {
+    // Check for flags
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-v") == 0) {
             verbose = 1;
-        } else if (strcmp(argv[1], "--bunny") == 0) {
+        } else if (strcmp(argv[i], "--bunny") == 0) {
             showBunny = 1;
+        } else if (strcmp(argv[i], "--otherFlag") == 0) {
+            // Handle other flag logic
+            // You can add more flags as needed
         }
     }
 
@@ -83,7 +86,7 @@ void kittyfetch(int verbose, int isBunny) {
     if (verbose) {
         printf("\n");
         if (isBunny) {
-            printf("\033[92m (\\ /) ( . .) c(%c)(%c) Meow! This is bunnyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", '"', '"', VERSION);
+            printf("\033[92m ^-^ Purr! This is bunnyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
         } else {
             printf("\033[92m >-< Meow! This is kittyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
         }
@@ -99,9 +102,9 @@ void kittyfetch(int verbose, int isBunny) {
             "            %s\n"
             "            %s\n"
             "            %s\n"
-            "   \033[38;5;94m(\\ /)\033[0m    %s\n"
+            "   \033[38;5;15m(\\ /)\033[0m    %s\n"
             "   \033[38;5;15m( . .)\033[0m   %s\n"
-            "   \033[38;5;94mc(%c)(%c)\033[0m  %s\n"
+            "   \033[38;5;15mc(\033[38;5;211m%c\033[\033[38;5;15m)(\033[38;5;211m%c\033[\033[38;5;15m)\033[0m  %s\n"
             "            %s\n"
             "            %s\n"
             "            %s\n"
