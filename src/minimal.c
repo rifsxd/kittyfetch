@@ -9,9 +9,9 @@ void kittyfetchminimal(int verbose, int isBunny) {
     if (verbose) {
         printf("\n");
         if (isBunny) {
-            printf("\033[92m ^-^ Purr! This is bunnyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
+            printf("\033[92m ( . .) Purr! This is bunnyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
         } else {
-            printf("\033[92m >-< Meow! This is kittyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
+            printf("\033[92m =>-<= Meow! This is kittyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
         }
     }
 
