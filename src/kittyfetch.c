@@ -11,7 +11,7 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
-#define VERSION "0.0.8"
+#define VERSION "0.0.9"
 
 #ifdef LEGACY
 #define USER "User"
@@ -40,7 +40,7 @@
 #endif
 
 // Function declarations
-void kittyfetch(int verbose);
+void kittyfetch(int verbose, int isBunny);
 char *titleinf();
 char *uptimeinf();
 char *osinf();
@@ -56,55 +56,102 @@ char *gpuinf();
 
 int main(int argc, char *argv[]) {
     int verbose = 0;
+    int showBunny = 0;
 
     // Check for the -v flag
-    if (argc > 1 && strcmp(argv[1], "-v") == 0) {
-        verbose = 1;
+    if (argc > 1) {
+        if (strcmp(argv[1], "-v") == 0) {
+            verbose = 1;
+        } else if (strcmp(argv[1], "--bunny") == 0) {
+            showBunny = 1;
+        }
     }
 
     srand(time(NULL));
 
-    kittyfetch(verbose);
+    if (showBunny) {
+        printf("\n");
+        kittyfetch(verbose, 1); // Show bunny
+    } else {
+        kittyfetch(verbose, 0); // Show default kitty
+    }
+
     return 0;
 }
 
-void kittyfetch(int verbose) {
+void kittyfetch(int verbose, int isBunny) {
     if (verbose) {
         printf("\n");
-        printf("\033[92m >-< Meow! This is kittyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
+        if (isBunny) {
+            printf("\033[92m (\\ /) ( . .) c(%c)(%c) Meow! This is bunnyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", '"', '"', VERSION);
+        } else {
+            printf("\033[92m >-< Meow! This is kittyfetch %s, your friendly system information display made with love by RifsxD! <3\033[0m\n\n", VERSION);
+        }
     }
 
-    printf(
-        "            \n"
-        " \033[3m%s\n"
-        "            \n"
-        "            %s\n"
-        "            %s\n"
-        "            %s\n"
-        "            %s\n"
-        "   \033[38;5;94m/\\_/\\\033[0m    %s\n"
-        "  \033[38;5;15m( >.< )\033[0m   %s\n"
-        "   \033[38;5;94m= ^ =\033[0m    %s\n"
-        "  \033[38;5;15m~(\033[38;5;211m♥\033[\033[38;5;15m)(\033[38;5;211m♥\033[38;5;15m)   %s\n"
-        "            %s\n"
-        "            %s\n"
-        "            %s\n"
-        "            \n",
-        getRandomGreeting(),
-        titleinf(),
-        osinf(),
-        packageinf(), // Might make the fetch utility slow, disable it if you need it.
-        kernelinf(),
-        uptimeinf(),
-        shellinf(),
-        cpuinf(),
-        gpuinf(),
-        storageinf(),
-        raminf(),
-        wminf()
-    );
-
-    cpuinf(); // Display CPU information
+    if (isBunny) {
+        // Bunny printf
+        printf(
+            "            \n"
+            " \033[3m%s\n"
+            "            \n"
+            "            %s\n"
+            "            %s\n"
+            "            %s\n"
+            "            %s\n"
+            "   \033[38;5;94m(\\ /)\033[0m    %s\n"
+            "   \033[38;5;15m( . .)\033[0m   %s\n"
+            "   \033[38;5;94mc(%c)(%c)\033[0m  %s\n"
+            "            %s\n"
+            "            %s\n"
+            "            %s\n"
+            "            %s\n\n",
+            getRandomGreeting(),
+            titleinf(),
+            osinf(),
+            packageinf(),
+            kernelinf(),
+            uptimeinf(),
+            shellinf(),
+            '"', '"',
+            cpuinf(),
+            gpuinf(),
+            storageinf(),
+            raminf(),
+            wminf()
+        );
+    } else {
+        // Default kitty printf
+        printf(
+            "            \n"
+            " \033[3m%s\n"
+            "            \n"
+            "            %s\n"
+            "            %s\n"
+            "            %s\n"
+            "            %s\n"
+            "   \033[38;5;94m/\\_/\\\033[0m    %s\n"
+            "  \033[38;5;15m( >.< )\033[0m   %s\n"
+            "   \033[38;5;94m= ^ =\033[0m    %s\n"
+            "  \033[38;5;15m~(\033[38;5;211m♥\033[\033[38;5;15m)(\033[38;5;211m♥\033[38;5;15m)   %s\n"
+            "            %s\n"
+            "            %s\n"
+            "            %s\n"
+            "            \n",
+            getRandomGreeting(),
+            titleinf(),
+            osinf(),
+            packageinf(),
+            kernelinf(),
+            uptimeinf(),
+            shellinf(),
+            cpuinf(),
+            gpuinf(),
+            storageinf(),
+            raminf(),
+            wminf()
+        );
+    }
 
     printf("         ");
     for (int i = 0; i < 8; i++) {
