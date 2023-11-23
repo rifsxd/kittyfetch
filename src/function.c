@@ -27,7 +27,6 @@ char *getRandomGreeting() {
         "\033[92m Hi! ^_^\033[0m",
         "\033[92m Hewwo! <3\033[0m"
     };
-
     return greetings[rand() % (sizeof(greetings) / sizeof(greetings[0]))];
 }
 
@@ -42,25 +41,24 @@ char *getRandomGreetingBunny() {
         "\033[92m Hi! ^_^\033[0m",
         "\033[92m Hewwo! <3\033[0m"
     };
-
     return greetings[rand() % (sizeof(greetings) / sizeof(greetings[0]))];
 }
 
 char *titleinf() {
-    char *title = malloc(256);
-    if (title) {
+    char *titleInfo = malloc(256);
+    if (titleInfo) {
         char username[256];
         char hostname[256];
         if (getlogin_r(username, sizeof(username)) == 0 && gethostname(hostname, sizeof(hostname)) == 0) {
-            snprintf(title, 256, "\033[31m%s \033[31m%s\033[0m", USER, strcat(strcat(username, "@"), hostname));
+            snprintf(titleInfo, 256, "\033[31m%s \033[31m%s\033[0m", USER, strcat(strcat(username, "@"), hostname));
         } else {
-            snprintf(title, 256, "\033[31m%s \033[31m%s\033[0m", USER, "Unknown");
+            snprintf(titleInfo, 256, "\033[31m%s \033[31m%s\033[0m", USER, "Unknown");
         }
     } else {
-        snprintf(title, 256, "\033[31m%s \033[31m%s\033[0m", USER, "Unknown");
+        snprintf(titleInfo, 256, "\033[31m%s \033[31m%s\033[0m", USER, "Unknown");
     }
-
-    return title;
+    free(titleInfo);
+    return titleInfo;
 }
 
 char *osinf() {
@@ -84,59 +82,59 @@ char *osinf() {
     } else {
         snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, "Unknown");
     }
-
+    free(osInfo);
     return osInfo;
 }
 
 char *kernelinf() {
-    char *osInfo = malloc(256);
+    char *kernelInfo = malloc(256);
 
-    if (osInfo) {
+    if (kernelInfo) {
         struct utsname unameData;
         if (uname(&unameData) == 0) {
-            snprintf(osInfo, 256, "\033[33m%s \033[0m%s", KERNEL, unameData.release);
+            snprintf(kernelInfo, 256, "\033[33m%s \033[0m%s", KERNEL, unameData.release);
         } else {
-            snprintf(osInfo, 256, "\033[33m%s \033[0m%s", KERNEL, "Unknown");
+            snprintf(kernelInfo, 256, "\033[33m%s \033[0m%s", KERNEL, "Unknown");
         }
     } else {
-        snprintf(osInfo, 256, "\033[33m%s \033[0m%s", KERNEL, "Unknown");
+        snprintf(kernelInfo, 256, "\033[33m%s \033[0m%s", KERNEL, "Unknown");
     }
-
-    return osInfo;
+    free(kernelInfo);
+    return kernelInfo;
 }
 
 char *shellinf() {
-    char *shell = malloc(256);
-    if (shell) {
+    char *shellInfo = malloc(256);
+    if (shellInfo) {
         char *shellenv = getenv("SHELL");
         if (shellenv) {
             char *shellname = strrchr(shellenv, '/');
             if (shellname) {
                 // If there's a '/', use the string after it
-                snprintf(shell, 256, "\033[34m%s \033[0m%s", SHELL, shellname + 1);
+                snprintf(shellInfo, 256, "\033[34m%s \033[0m%s", SHELL, shellname + 1);
             } else {
                 // If no '/', consider the whole string as the shell name
-                snprintf(shell, 256, "\033[34m%s \033[0m%s", SHELL, shellenv);
+                snprintf(shellInfo, 256, "\033[34m%s \033[0m%s", SHELL, shellenv);
             }
         } else {
-            snprintf(shell, 256, "\033[34m%s \033[0m%s", SHELL, "Unknown");
+            snprintf(shellInfo, 256, "\033[34m%s \033[0m%s", SHELL, "Unknown");
         }
     } else {
-        snprintf(shell, 256, "\033[34m%s \033[0m%s", SHELL, "Unknown");
+        snprintf(shellInfo, 256, "\033[34m%s \033[0m%s", SHELL, "Unknown");
     }
-
-    return shell;
+    free(shellInfo);
+    return shellInfo;
 }
 
 
 char *wminf() {
-    char *wm = malloc(256);
+    char *wmInfo = malloc(256);
 
-    if (wm) {
+    if (wmInfo) {
         char *waylandDisplay = getenv("WAYLAND_DISPLAY");
         if (waylandDisplay) {
             char *xdgDesktop = getenv("XDG_CURRENT_DESKTOP");
-            snprintf(wm, 256, "\033[38;5;93m%s \033[0m%s", WM, xdgDesktop ? xdgDesktop : "Unknown");
+            snprintf(wmInfo, 256, "\033[38;5;93m%s \033[0m%s", WM, xdgDesktop ? xdgDesktop : "Unknown");
         } else {
             Display *display = XOpenDisplay(NULL);
             if (display) {
@@ -161,29 +159,29 @@ char *wminf() {
                         if (XGetWindowProperty(display, supportingWmCheck, netWmNameAtom, 0, 1024, False,
                                                utf8StringAtom, &actualType, &actualFormat,
                                                &nItems, &bytesAfter, &propValue) == Success && propValue) {
-                            snprintf(wm, 256, "\033[38;5;93m%s \033[0m%s", WM, (char *)propValue);
+                            snprintf(wmInfo, 256, "\033[38;5;93m%s \033[0m%s", WM, (char *)propValue);
                             XFree(propValue);
                         } else {
-                            snprintf(wm, 256, "\033[38;5;93m%s \033[0m%s", WM, "Unknown");
+                            snprintf(wmInfo, 256, "\033[38;5;93m%s \033[0m%s", WM, "Unknown");
                         }
                     }
                 }
 
                 XCloseDisplay(display);
             } else {
-                snprintf(wm, 256, "\033[38;5;93m%s \033[0m%s", WM, "Unknown");
+                snprintf(wmInfo, 256, "\033[38;5;93m%s \033[0m%s", WM, "Unknown");
             }
         }
     } else {
-        snprintf(wm, 256, "\033[38;5;93m%s \033[0m%s", WM, "Unknown");
+        snprintf(wmInfo, 256, "\033[38;5;93m%s \033[0m%s", WM, "Unknown");
     }
-
-    return wm;
+    free(wmInfo);
+    return wmInfo;
 }
 
 char *uptimeinf() {
-    char *uptime = malloc(256);
-    if (uptime) {
+    char *uptimeInfo = malloc(256);
+    if (uptimeInfo) {
         FILE *uptimeFile = fopen("/proc/uptime", "r");
         if (uptimeFile) {
             double uptimeValue;
@@ -193,20 +191,20 @@ char *uptimeinf() {
             int hours = (int)(uptimeValue / 3600);
             int minutes = (int)((uptimeValue - hours * 3600) / 60);
 
-            snprintf(uptime, 256, "\033[36m%s \033[0m%dh %dm", UPTIME, hours, minutes);
+            snprintf(uptimeInfo, 256, "\033[36m%s \033[0m%dh %dm", UPTIME, hours, minutes);
         } else {
-            snprintf(uptime, 256, "\033[36m%s \033[0m%s", UPTIME, "Unknown");
+            snprintf(uptimeInfo, 256, "\033[36m%s \033[0m%s", UPTIME, "Unknown");
         }
     } else {
-        snprintf(uptime, 256, "\033[36m%s \033[0m%s", UPTIME, "Unknown");
+        snprintf(uptimeInfo, 256, "\033[36m%s \033[0m%s", UPTIME, "Unknown");
     }
-
-    return uptime;
+    free(uptimeInfo);
+    return uptimeInfo;
 }
 
 char *raminf() {
-    char *ram = malloc(256);
-    if (ram) {
+    char *ramInfo = malloc(256);
+    if (ramInfo) {
         FILE *meminfo = fopen("/proc/meminfo", "r");
         if (meminfo) {
             long total_mem = 0, free_mem = 0, buffers = 0, cached = 0;
@@ -230,64 +228,65 @@ char *raminf() {
             if (total_mem > 0 && free_mem > 0) {
                 // Adjust based on your preference
                 long used_mem = total_mem - free_mem - buffers - cached;
-                snprintf(ram, 256, "\033[38;5;198m%s \033[0m%ld MB / %ld MB", RAM, used_mem / 1024, total_mem / 1024);
+                snprintf(ramInfo, 256, "\033[38;5;198m%s \033[0m%ld MB / %ld MB", RAM, used_mem / 1024, total_mem / 1024);
             } else {
-                snprintf(ram, 256, "\033[38;5;198m%s \033[0m%s", RAM, "Unknown");
+                snprintf(ramInfo, 256, "\033[38;5;198m%s \033[0m%s", RAM, "Unknown");
             }
 
             fclose(meminfo);
         } else {
-            snprintf(ram, 256, "\033[38;5;198m%s \033[0m%s", RAM, "Unknown");
+            snprintf(ramInfo, 256, "\033[38;5;198m%s \033[0m%s", RAM, "Unknown");
         }
     } else {
-        snprintf(ram, 256, "\033[38;5;198m%s \033[0m%s", RAM, "Unknown");
+        snprintf(ramInfo, 256, "\033[38;5;198m%s \033[0m%s", RAM, "Unknown");
     }
-
-    return ram;
+    free(ramInfo);
+    return ramInfo;
 }
 
 char *storageinf() {
-    char *storage = malloc(256);
-    if (storage) {
+    char *storageInfo = malloc(256);
+    if (storageInfo) {
         struct statvfs vfs;
         if (statvfs("/", &vfs) == 0) {
             long total_space = (long)vfs.f_frsize * vfs.f_blocks;
             long used_space = (long)vfs.f_frsize * (vfs.f_blocks - vfs.f_bfree);
 
-            snprintf(storage, 256, "\033[95m%s \033[0m%ld MB / %ld MB", DISK, used_space / (1024 * 1024), total_space / (1024 * 1024));
+            snprintf(storageInfo, 256, "\033[95m%s \033[0m%ld MB / %ld MB", DISK, used_space / (1024 * 1024), total_space / (1024 * 1024));
         } else {
-            snprintf(storage, 256, "\033[95m%s \033[0m%s", DISK, "Unknown");
+            snprintf(storageInfo, 256, "\033[95m%s \033[0m%s", DISK, "Unknown");
         }
     } else {
-        snprintf(storage, 256, "\033[95m%s \033[0m%s", DISK, "Unknown");
+        snprintf(storageInfo, 256, "\033[95m%s \033[0m%s", DISK, "Unknown");
     }
-
-    return storage;
+    free(storageInfo);
+    return storageInfo;
 }
 
 char *getLSBReleaseInfo() {
-    char *lsbInfo = malloc(256);
-    if (lsbInfo) {
+    char *lsbaltInfo = malloc(256);
+    if (lsbaltInfo) {
         FILE *lsbReleaseFile = popen("lsb_release -si 2>/dev/null", "r");
         if (lsbReleaseFile) {
-            if (fgets(lsbInfo, 256, lsbReleaseFile) != NULL) {
+            if (fgets(lsbaltInfo, 256, lsbReleaseFile) != NULL) {
                 // Remove newline character
-                lsbInfo[strcspn(lsbInfo, "\n")] = 0;
+                lsbaltInfo[strcspn(lsbaltInfo, "\n")] = 0;
             } else {
-                snprintf(lsbInfo, 256, "%s", "Unknown");
+                snprintf(lsbaltInfo, 256, "%s", "Unknown");
             }
             pclose(lsbReleaseFile);
         } else {
-            snprintf(lsbInfo, 256, "%s", "Unknown");
+            snprintf(lsbaltInfo, 256, "%s", "Unknown");
         }
     } else {
-        snprintf(lsbInfo, 256, "%s", "Unknown");
+        snprintf(lsbaltInfo, 256, "%s", "Unknown");
     }
-    return lsbInfo;
+    
+    return lsbaltInfo;
 }
 
 char *packageinf() {
-    char *lsbInfo = getLSBReleaseInfo();
+    char *lsbaltInfo = getLSBReleaseInfo();
 
     char *packageInfo = malloc(256);
     if (packageInfo) {
@@ -366,17 +365,17 @@ char *packageinf() {
         } else {
             snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
         }
-        free(lsbInfo);
+        free(lsbaltInfo);
     } else {
         snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
     }
-
+    free(packageInfo);
     return packageInfo;
 }
 
 char *cpuinf() {
-    char *cpu = malloc(256);
-    if (cpu) {
+    char *cpuInfo = malloc(256);
+    if (cpuInfo) {
         FILE *cpuinfo = fopen("/proc/cpuinfo", "r");
         if (cpuinfo) {
             char line[256];
@@ -387,51 +386,52 @@ char *cpuinf() {
                     cpuCount++;
                     char *model = strchr(line, ':') + 2;
                     model[strlen(model) - 1] = '\0'; // Remove the trailing newline
-                    snprintf(cpu, 256, "\033[95m%s \033[0m%s (x%d)", CPU, model, cpuCount);
+                    snprintf(cpuInfo, 256, "\033[95m%s \033[0m%s (x%d)", CPU, model, cpuCount);
                 }
             }
 
             fclose(cpuinfo);
         } else {
-            snprintf(cpu, 256, "\033[95m%s \033[0m%s", CPU, "Unknown");
+            snprintf(cpuInfo, 256, "\033[95m%s \033[0m%s", CPU, "Unknown");
         }
     } else {
-        snprintf(cpu, 256, "\033[95m%s \033[0m%s", CPU, "Unknown");
+        snprintf(cpuInfo, 256, "\033[95m%s \033[0m%s", CPU, "Unknown");
     }
-
-    return cpu;
+    free(cpuInfo);
+    return cpuInfo;
+    
 }
 
 char *gpuinf() {
-    char *gpu = malloc(256);
-    if (gpu) {
+    char *gpuInfo = malloc(256);
+    if (gpuInfo) {
         FILE *lspci = popen("lspci | grep -i vga", "r");
         if (lspci) {
             char line[256];
 
             if (fgets(line, sizeof(line), lspci) != NULL) {
                 // Remove unwanted prefix
-                char *gpuInfo = strstr(line, ": ");
-                if (gpuInfo) {
-                    gpuInfo += 2;  // Move past the ": "
+                char *gpuName = strstr(line, ": ");
+                if (gpuName) {
+                    gpuName += 2;  // Move past the ": "
                     // Remove newline character
-                    gpuInfo[strcspn(gpuInfo, "\n")] = 0;
+                    gpuName[strcspn(gpuName, "\n")] = 0;
 
-                    snprintf(gpu, 256, "\033[96m%s \033[0m%s", GPU, gpuInfo);
+                    snprintf(gpuInfo, 256, "\033[96m%s \033[0m%s", GPU, gpuName);
                 } else {
-                    snprintf(gpu, 256, "\033[96m%s \033[0m%s", GPU, "Unknown");
+                    snprintf(gpuInfo, 256, "\033[96m%s \033[0m%s", GPU, "Unknown");
                 }
             } else {
-                snprintf(gpu, 256, "\033[96m%s \033[0m%s", GPU, "Unknown");
+                snprintf(gpuInfo, 256, "\033[96m%s \033[0m%s", GPU, "Unknown");
             }
 
             pclose(lspci);
         } else {
-            snprintf(gpu, 256, "\033[96m%s \033[0m%s", GPU, "Unknown");
+            snprintf(gpuInfo, 256, "\033[96m%s \033[0m%s", GPU, "Unknown");
         }
     } else {
-        snprintf(gpu, 256, "\033[96m%s \033[0m%s", GPU, "Unknown");
+        snprintf(gpuInfo, 256, "\033[96m%s \033[0m%s", GPU, "Unknown");
     }
-
-    return gpu;
+    free(gpuInfo);
+    return gpuInfo;
 }
