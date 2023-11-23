@@ -57,7 +57,6 @@ char *titleinf() {
     } else {
         snprintf(titleInfo, 256, "\033[31m%s \033[31m%s\033[0m", USER, "Unknown");
     }
-    free(titleInfo);
     return titleInfo;
 }
 
@@ -82,7 +81,7 @@ char *osinf() {
     } else {
         snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, "Unknown");
     }
-    free(osInfo);
+    
     return osInfo;
 }
 
@@ -99,7 +98,7 @@ char *kernelinf() {
     } else {
         snprintf(kernelInfo, 256, "\033[33m%s \033[0m%s", KERNEL, "Unknown");
     }
-    free(kernelInfo);
+    
     return kernelInfo;
 }
 
@@ -122,7 +121,7 @@ char *shellinf() {
     } else {
         snprintf(shellInfo, 256, "\033[34m%s \033[0m%s", SHELL, "Unknown");
     }
-    free(shellInfo);
+    
     return shellInfo;
 }
 
@@ -175,7 +174,7 @@ char *wminf() {
     } else {
         snprintf(wmInfo, 256, "\033[38;5;93m%s \033[0m%s", WM, "Unknown");
     }
-    free(wmInfo);
+    
     return wmInfo;
 }
 
@@ -198,7 +197,7 @@ char *uptimeinf() {
     } else {
         snprintf(uptimeInfo, 256, "\033[36m%s \033[0m%s", UPTIME, "Unknown");
     }
-    free(uptimeInfo);
+    
     return uptimeInfo;
 }
 
@@ -240,27 +239,27 @@ char *raminf() {
     } else {
         snprintf(ramInfo, 256, "\033[38;5;198m%s \033[0m%s", RAM, "Unknown");
     }
-    free(ramInfo);
+    
     return ramInfo;
 }
 
 char *storageinf() {
-    char *storageInfo = malloc(256);
-    if (storageInfo) {
+    char *stoageInfo = malloc(256);
+    if (stoageInfo) {
         struct statvfs vfs;
         if (statvfs("/", &vfs) == 0) {
             long total_space = (long)vfs.f_frsize * vfs.f_blocks;
             long used_space = (long)vfs.f_frsize * (vfs.f_blocks - vfs.f_bfree);
 
-            snprintf(storageInfo, 256, "\033[95m%s \033[0m%ld MB / %ld MB", DISK, used_space / (1024 * 1024), total_space / (1024 * 1024));
+            snprintf(stoageInfo, 256, "\033[95m%s \033[0m%ld MB / %ld MB", DISK, used_space / (1024 * 1024), total_space / (1024 * 1024));
         } else {
-            snprintf(storageInfo, 256, "\033[95m%s \033[0m%s", DISK, "Unknown");
+            snprintf(stoageInfo, 256, "\033[95m%s \033[0m%s", DISK, "Unknown");
         }
     } else {
-        snprintf(storageInfo, 256, "\033[95m%s \033[0m%s", DISK, "Unknown");
+        snprintf(stoageInfo, 256, "\033[95m%s \033[0m%s", DISK, "Unknown");
     }
-    free(storageInfo);
-    return storageInfo;
+    
+    return stoageInfo;
 }
 
 char *getLSBReleaseInfo() {
@@ -365,11 +364,10 @@ char *packageinf() {
         } else {
             snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
         }
-        free(lsbaltInfo);
     } else {
         snprintf(packageInfo, 256, "\033[38;5;208m%s \033[0m%s", PACKAGES, "Unknown");
     }
-    free(packageInfo);
+    
     return packageInfo;
 }
 
@@ -397,7 +395,7 @@ char *cpuinf() {
     } else {
         snprintf(cpuInfo, 256, "\033[95m%s \033[0m%s", CPU, "Unknown");
     }
-    free(cpuInfo);
+    
     return cpuInfo;
     
 }
@@ -432,6 +430,6 @@ char *gpuinf() {
     } else {
         snprintf(gpuInfo, 256, "\033[96m%s \033[0m%s", GPU, "Unknown");
     }
-    free(gpuInfo);
+    
     return gpuInfo;
 }
