@@ -4,6 +4,9 @@
         "xutil.h": "c",
         "xatom.h": "c",
         "xlib.h": "c",
-        "function.h": "c"
+        "function.h": "c",
+        "version.h": "c",
+        "minimal.h": "c",
+        "extended.h": "c"
     }
 }
