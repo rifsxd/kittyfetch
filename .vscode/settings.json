@@ -2,6 +2,8 @@
     "files.associations": {
         "cstring": "c",
         "xutil.h": "c",
-        "xatom.h": "c"
+        "xatom.h": "c",
+        "xlib.h": "c",
+        "function.h": "c"
     }
 }

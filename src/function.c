@@ -13,9 +13,6 @@
 
 #include "function.h"
 
-#include "extended.c"
-#include "minimal.c"
-
 char *getRandomGreeting() {
     char *greetings[] = {
         "\033[92m Meow! =>.<=\033[0m",

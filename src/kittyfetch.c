@@ -4,6 +4,8 @@
 #include <unistd.h>
 
 #include "function.c"
+#include "extended.c"
+#include "minimal.c"
 
 int main(int argc, char *argv[]) {
     int verbose = 0;
@@ -12,16 +14,13 @@ int main(int argc, char *argv[]) {
 
     // Check for flags
     for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "-v") == 0) {
+        if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--verbose") == 0) {
             verbose = 1;
-        } else if (strcmp(argv[i], "--bunny") == 0) {
+        } else if (strcmp(argv[i], "-b") == 0 || strcmp(argv[i], "--bunny") == 0) {
             showBunny = 1;
-        } else if (strcmp(argv[i], "--minimal") == 0) {
+        } else if (strcmp(argv[i], "-m") == 0 || strcmp(argv[i], "--minimal") == 0) {
             minimal = 1;
-        } else if (strcmp(argv[i], "--otherFlag") == 0) {
-            // Handle other flag logic
-            // You can add more flags as needed
-        }
+        } else (strcmp(argv[i], "--otherFlag") == 0);
     }
 
     srand(time(NULL));
