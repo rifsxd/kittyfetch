@@ -64,9 +64,27 @@ char *getOsInfo() {
             char line[256];
             while (fgets(line, sizeof(line), fp)) {
                 if (strstr(line, "NAME")) {
-                    char *name = strchr(line, '=') + 2; // Skip the '=' and space characters
-                    name[strlen(name) - 2] = '\0';    // Remove the trailing newline and quote characters
-                    snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, name);
+                    char *nameStart = strchr(line, '=') + 1; // Move to the character after '='
+                    char *nameEnd = strrchr(line, '\n');     // Find the last newline character
+                    if (nameStart && nameEnd) {
+                        *nameEnd = '\0';  // Remove the trailing newline character
+
+                        // Check if the name is enclosed in double quotes
+                        if (*nameStart == '"') {
+                            // Remove the leading quote
+                            memmove(nameStart, nameStart + 1, nameEnd - nameStart);
+                            
+                            // Remove any trailing quote
+                            char *trailingQuote = strchr(nameStart, '"');
+                            if (trailingQuote) {
+                                *trailingQuote = '\0';
+                            }
+                        }
+
+                        snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, nameStart);
+                    } else {
+                        snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, "Unknown");
+                    }
                     break;
                 }
             }
