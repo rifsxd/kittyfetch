@@ -31,7 +31,7 @@ sudo make clean install_legacy
 ```  
 
 # Usage
-Run `kittyfetch`! For some version/verbose info of Kittyfetch use -v or --verbose flag. For bunny art use -b or --bunny flag. For a more minimal fetch info use -m or --minimal flag.
+Run `kittyfetch`! For some version/verbose info of Kittyfetch use `-v` or `--verbose` flag. For bunny art use `-b` or `--bunny` flag. For a more minimal fetch info use `-m` or `--minimal` flag.
 
 # License
 Kittyfetch is licensed under the MIT license.  
