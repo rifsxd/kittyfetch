@@ -2,7 +2,7 @@
 	<h1>Kittyfetch</h1>
 	<blockquote align="center">🐈‍⬛ Cute little system info fetch utility.</blockquote>
 	<p><br>
-		🐈‍⬛ Kittyfetch is a cute little and fast tool for fetching info about your system.
+		🐈‍⬛ Kittyfetch is a cute little and fast tool for fetching info about your system. Inspired from <a href="https://github.com/Rosettea/bunnyfetch"> Rosettea's Bunnyfetch</a> and i made it in C and extended it to be more featureful while keeping the code minimal.
 	</p><br>
 	<p><br> Full Kitty</p><br>
 	<img src="/assets/kitty_full.png">
