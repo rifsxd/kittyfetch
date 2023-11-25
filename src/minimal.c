@@ -27,12 +27,12 @@ void minimal(int isVerbose, int isBunny) {
             "   \033[38;5;15m( . .)\033[0m   %s\n"
             "   \033[38;5;15mc(\033[38;5;211m%c\033[\033[38;5;15m)(\033[38;5;211m%c\033[\033[38;5;15m)\033[0m  %s\n\n",
             getRandomGreetingBunny(),
-            titleinf(),
-            osinf(),
-            kernelinf(),
-            shellinf(),
+            getTitleInfo(),
+            getOsInfo(),
+            getKernelInfo(),
+            getShellInfo(),
             '"', '"',
-            wminf()
+            getWmInfo()
         );
     } else {
         // Default kitty printf
@@ -46,11 +46,11 @@ void minimal(int isVerbose, int isBunny) {
             "   \033[38;5;94m= ^ =\033[0m    %s\n"
             "  \033[38;5;15m~(\033[38;5;211m♥\033[\033[38;5;15m)(\033[38;5;211m♥\033[38;5;15m)   %s\n\n",
             getRandomGreeting(),
-            titleinf(),
-            osinf(),
-            kernelinf(),
-            shellinf(),
-            wminf()
+            getTitleInfo(),
+            getOsInfo(),
+            getKernelInfo(),
+            getShellInfo(),
+            getWmInfo()
         );
     }
 

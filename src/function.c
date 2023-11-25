@@ -41,7 +41,7 @@ char *getRandomGreetingBunny() {
     return greetings[rand() % (sizeof(greetings) / sizeof(greetings[0]))];
 }
 
-char *titleinf() {
+char *getTitleInfo() {
     char *titleInfo = malloc(256);
     if (titleInfo) {
         char username[256];
@@ -57,7 +57,7 @@ char *titleinf() {
     return titleInfo;
 }
 
-char *osinf() {
+char *getOsInfo() {
     char *osInfo = malloc(256);
     if (osInfo) {
         FILE *fp = fopen("/etc/os-release", "r");
@@ -82,7 +82,7 @@ char *osinf() {
     return osInfo;
 }
 
-char *kernelinf() {
+char *getKernelInfo() {
     char *kernelInfo = malloc(256);
 
     if (kernelInfo) {
@@ -99,7 +99,7 @@ char *kernelinf() {
     return kernelInfo;
 }
 
-char *shellinf() {
+char *getShellInfo() {
     char *shellInfo = malloc(256);
     if (shellInfo) {
         char *shellenv = getenv("SHELL");
@@ -123,7 +123,7 @@ char *shellinf() {
 }
 
 
-char *wminf() {
+char *getWmInfo() {
     char *wmInfo = malloc(256);
 
     if (wmInfo) {
@@ -175,7 +175,7 @@ char *wminf() {
     return wmInfo;
 }
 
-char *uptimeinf() {
+char *getUptimeInfo() {
     char *uptimeInfo = malloc(256);
     if (uptimeInfo) {
         FILE *uptimeFile = fopen("/proc/uptime", "r");
@@ -198,7 +198,7 @@ char *uptimeinf() {
     return uptimeInfo;
 }
 
-char *raminf() {
+char *getRamInfo() {
     char *ramInfo = malloc(256);
     if (ramInfo) {
         FILE *meminfo = fopen("/proc/meminfo", "r");
@@ -240,7 +240,7 @@ char *raminf() {
     return ramInfo;
 }
 
-char *storageinf() {
+char *getStorageInfo() {
     char *stoageInfo = malloc(256);
     if (stoageInfo) {
         struct statvfs vfs;
@@ -281,7 +281,7 @@ char *getLSBReleaseInfo() {
     return lsbaltInfo;
 }
 
-char *packageinf() {
+char *getPackageInfo() {
     char *lsbaltInfo = getLSBReleaseInfo();
 
     char *packageInfo = malloc(256);
@@ -368,7 +368,7 @@ char *packageinf() {
     return packageInfo;
 }
 
-char *cpuinf() {
+char *getCpuInfo() {
     char *cpuInfo = malloc(256);
     if (cpuInfo) {
         FILE *cpuinfo = fopen("/proc/cpuinfo", "r");
@@ -397,7 +397,7 @@ char *cpuinf() {
     
 }
 
-char *gpuinf() {
+char *getGpuInfo() {
     char *gpuInfo = malloc(256);
     if (gpuInfo) {
         FILE *lspci = popen("lspci | grep -i vga", "r");

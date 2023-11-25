@@ -33,18 +33,18 @@ void extended(int isVerbose, int isBunny) {
             "            %s\n"
             "            %s\n\n",
             getRandomGreetingBunny(),
-            titleinf(),
-            osinf(),
-            packageinf(),
-            kernelinf(),
-            uptimeinf(),
-            shellinf(),
+            getTitleInfo(),
+            getOsInfo(),
+            getPackageInfo(),
+            getKernelInfo(),
+            getUptimeInfo(),
+            getShellInfo(),
             '"', '"',
-            cpuinf(),
-            gpuinf(),
-            storageinf(),
-            raminf(),
-            wminf()
+            getCpuInfo(),
+            getGpuInfo(),
+            getStorageInfo(),
+            getRamInfo(),
+            getWmInfo()
         );
     } else {
         // Default kitty printf
@@ -64,17 +64,17 @@ void extended(int isVerbose, int isBunny) {
             "            %s\n"
             "            %s\n\n",
             getRandomGreeting(),
-            titleinf(),
-            osinf(),
-            packageinf(),
-            kernelinf(),
-            uptimeinf(),
-            shellinf(),
-            cpuinf(),
-            gpuinf(),
-            storageinf(),
-            raminf(),
-            wminf()
+            getTitleInfo(),
+            getOsInfo(),
+            getPackageInfo(),
+            getKernelInfo(),
+            getUptimeInfo(),
+            getShellInfo(),
+            getCpuInfo(),
+            getGpuInfo(),
+            getStorageInfo(),
+            getRamInfo(),
+            getWmInfo()
         );
     }
 

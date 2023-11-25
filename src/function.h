@@ -1,19 +1,19 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
 
-char *titleinf();
-char *uptimeinf();
-char *osinf();
-char *raminf();
-char *kernelinf();
-char *shellinf();
-char *wminf();
+char *getTitleInfo();
+char *getUptimeInfo();
+char *getOsInfo();
+char *getRamInfo();
+char *getKernelInfo();
+char *getShellInfo();
+char *getWmInfo();
 char *getRandomGreeting();
 char *getRandomGreetingBunny();
-char *packageinf();
-char *storageinf();
-char *cpuinf();
-char *gpuinf();
+char *getPackageInfo();
+char *getStorageInfo();
+char *getCpuInfo();
+char *getGpuInfo();
 
 #ifdef LEGACY
 #define USER "User"
