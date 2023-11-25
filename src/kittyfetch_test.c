@@ -102,16 +102,25 @@ char *getOsInfo() {
     if (osInfo) {
         FILE *fp = fopen("/etc/os-release", "r");
         if (fp) {
+            int foundPrettyName = 0; // Flag to track if PRETTY_NAME is found
             char line[256];
+            
             while (fgets(line, sizeof(line), fp)) {
                 if (strstr(line, "PRETTY_NAME")) {
-                    char *name = strchr(line, '=') + 2; // Skip the '=' and space characters
-                    name[strlen(name) - 2] = '\0';    // Remove the trailing newline and quote characters
+                    char *name = strchr(line, '=') + 2;
+                    name[strlen(name) - 2] = '\0';
                     snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, name);
+                    foundPrettyName = 1; // Set the flag to true
                     break;
                 }
             }
+            
             fclose(fp);
+
+            // Check the flag to determine if PRETTY_NAME was found
+            if (!foundPrettyName) {
+                snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, "Unknown");
+            }
         } else {
             snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, "Unknown");
         }
