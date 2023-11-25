@@ -5,6 +5,7 @@
         "xatom.h": "c",
         "xlib.h": "c",
         "function.h": "c",
-        "version.h": "c"
+        "version.h": "c",
+        "unistd.h": "c"
     }
 }

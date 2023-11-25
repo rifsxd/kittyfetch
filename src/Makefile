@@ -3,8 +3,14 @@
 # Source file
 SRC = kittyfetch.c
 
+# Source file
+SRC_TEST = kittyfetch_test.c
+
 # Binary file
 BIN = kittyfetch
+
+# Binary file
+BIN_TEST = kittyfetch_test
 
 # Base location
 PREFIX ?= /usr/
@@ -34,6 +40,20 @@ install_legacy : build_legacy
 	@chmod 0755 ${INSTALLPATH}/${BIN}
 	@echo "installed"
 
+install_test : build_test
+
+	@echo "installing binary file to ${INSTALLPATH}/${BIN_TEST}"
+	@cp build/${BIN_TEST} ${INSTALLPATH}
+	@chmod 0755 ${INSTALLPATH}/${BIN}
+	@echo "installed"
+
+install_test_legacy : build_test_legacy
+
+	@echo "installing binary file to ${INSTALLPATH}/${BIN_TEST}"
+	@cp build/${BIN_TEST} ${INSTALLPATH}
+	@chmod 0755 ${INSTALLPATH}/${BIN}
+	@echo "installed"
+
 # Clean build files
 clean:
 	rm -rf build
@@ -47,6 +67,14 @@ build:
 build_legacy:
 	mkdir build
 	$(CC) -o build/$(BIN) $(SRC) $(LEGACY) $(FLAG)
+
+build_test:
+	mkdir build
+	$(CC) -o build/$(BIN_TEST) $(SRC_TEST) $(FLAG)
+
+build_test_legacy:
+	mkdir build
+	$(CC) -o build/$(BIN_TEST) $(SRC_TEST) $(LEGACY) $(FLAG)
 
 # Run the project
 run: build
