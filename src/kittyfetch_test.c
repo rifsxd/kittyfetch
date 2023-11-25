@@ -103,18 +103,21 @@ char *getOsInfo() {
         FILE *fp = fopen("/etc/os-release", "r");
         if (fp) {
             char line[256];
+            char *name = NULL;
+
             while (fgets(line, sizeof(line), fp)) {
-                if (strstr(line, "NAME")) {
-                    char *nameStart = strchr(line, '=') + 1; // Move to the character after '='
-                    char *nameEnd = strrchr(line, '\n');     // Find the last newline character
-                    if (nameStart && nameEnd) {
-                        *nameEnd = '\0';  // Remove the trailing newline character
+                char *nameStart = strstr(line, "=");
+                if (nameStart) {
+                    nameStart++; // Move to the character after '='
+                    char *nameEnd = strchr(nameStart, '\n'); // Find the newline character
+                    if (nameEnd) {
+                        *nameEnd = '\0'; // Remove the trailing newline character
 
                         // Check if the name is enclosed in double quotes
                         if (*nameStart == '"') {
                             // Remove the leading quote
                             memmove(nameStart, nameStart + 1, nameEnd - nameStart);
-                            
+
                             // Remove any trailing quote
                             char *trailingQuote = strchr(nameStart, '"');
                             if (trailingQuote) {
@@ -122,13 +125,18 @@ char *getOsInfo() {
                             }
                         }
 
-                        snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, nameStart);
-                    } else {
-                        snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, "Unknown");
+                        name = nameStart;
+                        break;
                     }
-                    break;
                 }
             }
+
+            if (name) {
+                snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, name);
+            } else {
+                snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, "Unknown");
+            }
+
             fclose(fp);
         } else {
             snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, "Unknown");
@@ -136,7 +144,7 @@ char *getOsInfo() {
     } else {
         snprintf(osInfo, 256, "\033[32m%s \033[0m%s", OS, "Unknown");
     }
-    
+
     return osInfo;
 }
 
@@ -179,7 +187,6 @@ char *getShellInfo() {
     
     return shellInfo;
 }
-
 
 char *getWmInfo() {
     char *wmInfo = malloc(256);
