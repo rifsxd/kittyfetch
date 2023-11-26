@@ -1,7 +1,7 @@
 # Makefile for Kittyfetch C project
 
 # Source file
-SRC = kittyfetch.cpp
+SRC = kittyfetch.c
 
 # Source file
 SRC_TEST = kittyfetch_test.cpp
@@ -24,6 +24,8 @@ LEGACY = "-D LEGACY"
 INSTALLPATH = ${DESTDIR}${PREFIX}/bin
 
 # Compiler
+CC = gcc
+
 CXX = g++
 
 install : build
@@ -61,12 +63,12 @@ clean:
 # Build the project
 build:
 	mkdir build
-	$(CXX) -o build/$(BIN) $(SRC) $(FLAG)
+	$(CC) -o build/$(BIN) $(SRC) $(FLAG)
 
 # Build the project with icons
 build_legacy:
 	mkdir build
-	$(CXX) -o build/$(BIN) $(SRC) $(LEGACY) $(FLAG)
+	$(CC) -o build/$(BIN) $(SRC) $(LEGACY) $(FLAG)
 
 build_test:
 	mkdir build
