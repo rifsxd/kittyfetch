@@ -4,7 +4,7 @@
 SRC = kittyfetch.c
 
 # Source file
-SRC_TEST = kittyfetch_test.c
+SRC_TEST = kittyfetch_test.cpp
 
 # Binary file
 BIN = kittyfetch
@@ -25,6 +25,8 @@ INSTALLPATH = ${DESTDIR}${PREFIX}/bin
 
 # Compiler
 CC = gcc
+
+CXX = g++
 
 install : build
 
@@ -70,11 +72,11 @@ build_legacy:
 
 build_test:
 	mkdir build
-	$(CC) -o build/$(BIN_TEST) $(SRC_TEST) $(FLAG)
+	$(CXX) -o build/$(BIN_TEST) $(SRC_TEST) $(FLAG)
 
 build_test_legacy:
 	mkdir build
-	$(CC) -o build/$(BIN_TEST) $(SRC_TEST) $(LEGACY) $(FLAG)
+	$(CXX) -o build/$(BIN_TEST) $(SRC_TEST) $(LEGACY) $(FLAG)
 
 # Run the project
 run: build
