@@ -3,6 +3,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <ctime>
+#include <unordered_map>
 
 #include <sys/utsname.h>
 #include <sys/statvfs.h>
@@ -11,7 +12,7 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
-#define VERSION "2.0.0-TESTING"
+#define VERSION "2.1.0-BETA"
 
 std::string getTitleInfo();
 std::string getUptimeInfo();
@@ -355,19 +356,31 @@ std::string getCpuInfo() {
     FILE *cpuinfo = fopen("/proc/cpuinfo", "r");
     if (cpuinfo) {
         char line[256];
-        int cpuCount = 0;
+        std::unordered_map<std::string, int> cpuModels;
 
         while (fgets(line, sizeof(line), cpuinfo) != NULL) {
             if (strstr(line, "model name")) {
-                cpuCount++;
                 char *model = strchr(line, ':') + 2;
                 model[strlen(model) - 1] = '\0'; // Remove the trailing newline
-                fclose(cpuinfo);
-                return "\033[95m" + std::string(CPU) + " \033[0m" + std::string(model) + " (x" + std::to_string(cpuCount) + ")";
+                cpuModels[std::string(model)]++;
             }
         }
 
         fclose(cpuinfo);
+
+        if (!cpuModels.empty()) {
+            std::string result = "\033[95m" + std::string(CPU) + " \033[0m";
+            
+            for (const auto& entry : cpuModels) {
+                result += entry.first + " (x" + std::to_string(entry.second) + "), ";
+            }
+
+            // Remove the trailing comma and space
+            result.pop_back();
+            result.pop_back();
+            
+            return result;
+        }
     }
 
     return "\033[95m" + std::string(CPU) + " \033[0mUnknown";
