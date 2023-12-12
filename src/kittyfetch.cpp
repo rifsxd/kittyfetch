@@ -12,7 +12,7 @@
 #include <X11/Xatom.h>
 #include <X11/Xutil.h>
 
-#define VERSION "2.1.0"
+#define VERSION "2.2.0"
 
 std::string getTitleInfo();
 std::string getUptimeInfo();
